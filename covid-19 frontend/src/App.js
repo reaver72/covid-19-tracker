@@ -50,7 +50,8 @@ const App = () => {
 		const fetchedDailyUpdate = await fetchDailyUpdate("Nepal");
 		setDailyData(fetchedDailyUpdate);
 		setLoading(false);
-	}, [setDailyData]);
+	}, []);
+	
 
 	if (loading) {
 		return null;
@@ -64,7 +65,7 @@ const App = () => {
 					alt="image"
 				/>
 			</div>
-			<Sidebar data={data} />
+			<Sidebar data={data} globalCases={globalCases} />
 			<TopCards
 				barData={data}
 				dailyData={dailyData}
