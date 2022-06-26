@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Chart from "./components/Chart/Chart";
-import { fetchTotal } from "./api";
+// import { fetchTotal } from "./api";
+import { barChartData } from "./api";
 import { fetchDailyUpdate } from "./api";
 import { fetchAllCountries } from "./api";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -14,20 +15,27 @@ const App = () => {
 	const [dailyData, setDailyData] = useState({});
 	const [countries, setCountries] = useState([]);
 	const [globalCases, setGlobalCases] = useState({});
+	const [country, setCountry] = useState(
+		localStorage.getItem("country") || "Global"
+	);
 
+	const countryValue = (country) => {
+		console.log(country);
+		localStorage.setItem("country", country);
+		setCountry(localStorage.getItem("country"));
+	};
 	const countryHandler = async (country) => {
 		try {
-			const fetchedTotal = await fetchTotal(country);
-			if (fetchedTotal) {
-				setData(fetchedTotal);
-			} else {
-				return;
-			}
+			// const fetchedTotal = await fetchTotal(country);
+			// if (fetchedTotal) {
+			// 	setData(fetchedTotal);
+			// } else {
+			// 	return;
+			// }
 			const fetchedDailyUpdate = await fetchDailyUpdate(country);
 			if (country === "Global") {
 				return;
-			}
-			else {
+			} else {
 				setDailyData(fetchedDailyUpdate);
 			}
 		} catch (e) {
@@ -38,10 +46,20 @@ const App = () => {
 		const fetchedCountries = await fetchAllCountries();
 		setCountries(fetchedCountries);
 	}, []);
+	// useEffect(async () => {
+	// 	const fetchedTotal = await fetchTotal();
+	// 	setData(fetchedTotal);
+	// }, []);
 	useEffect(async () => {
-		const fetchedTotal = await fetchTotal();
-		setData(fetchedTotal);
-	}, []);
+		console.log("object");
+		if (country) {
+			const barChartDatas = await barChartData(country);
+			setData(barChartDatas || 0);
+		} else {
+			const barChartDatas = await barChartData("Nepal");
+			setData(barChartDatas || 0);
+		}
+	}, [country]);
 	useEffect(async () => {
 		const fetchedAllCases = await fetchAllCases();
 		setGlobalCases(fetchedAllCases);
@@ -51,7 +69,6 @@ const App = () => {
 		setDailyData(fetchedDailyUpdate);
 		setLoading(false);
 	}, []);
-	
 
 	if (loading) {
 		return null;
@@ -65,18 +82,19 @@ const App = () => {
 					alt="image"
 				/>
 			</div>
-			<Sidebar data={data} globalCases={globalCases} />
+			<Sidebar data={data} />
 			<TopCards
 				barData={data}
 				dailyData={dailyData}
 				globalCases={globalCases}
-				dailyData={dailyData}
+				// dailyData={dailyData}
 				countryHandler={countryHandler}
+				countryValue={countryValue}
 				fetchedCountries={countries}
 				data={data}
 			/>
 			<Chart barData={data} />
-			<LineChart/>
+			<LineChart />
 		</div>
 	);
 };

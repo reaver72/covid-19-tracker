@@ -8,8 +8,8 @@ const LineChart= () => {
 
   
     useEffect(async () => {
-        const fetchedDailyData = await fetchDailyData()
-        setDailyData(fetchedDailyData)
+           const fetchedDailyData = await fetchDailyData()
+            setDailyData(fetchedDailyData)
        
     }, [])
 

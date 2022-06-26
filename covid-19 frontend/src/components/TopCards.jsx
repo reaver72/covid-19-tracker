@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Card from './Cards/Card'
 import CountryOption from './CountryOption/CountryOption';
 
-const TopCards = ({ dailyData, globalCases, countryHandler, fetchedCountries, data, className }) => {
+const TopCards = ({ dailyData, globalCases, countryHandler, fetchedCountries, data, countryValue }) => {
     const [isglobal, setIsGlobal] = useState(true)
     
     const optionValue = (country)=>{
@@ -22,7 +22,7 @@ const TopCards = ({ dailyData, globalCases, countryHandler, fetchedCountries, da
 
               <Card className="bg-yellow-500 h-1 mt-4" text={"Number of active corona patient cases "} title={"Active Cases"} date={new Date(globalCases.date).toDateString()} cases={isglobal?globalCases.newActiveCases: dailyData.cases.active || 0} />
           </div>
-          <CountryOption countryHandler={countryHandler} fetchedCountries={fetchedCountries} optionValue={ optionValue}/>
+          <CountryOption countryHandler={countryHandler} fetchedCountries={fetchedCountries} optionValue={optionValue} countryValue={ countryValue} />
 
       </div>
   )
