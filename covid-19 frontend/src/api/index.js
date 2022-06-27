@@ -21,7 +21,7 @@ export const barChartData = async (country) => {
 		const {
 			data: { body },
 		} = await axios.get(
-			`https://co-vid-19-tracker-app.herokuapp.com/api/v1/data/country/${country}`
+			`https://covid-19tracker--app.herokuapp.com/api/v1/data/country/${country}`
 		);
 
 		const totalInfected = body.body["Total Cases_text"].replaceAll(",", "");
@@ -38,7 +38,7 @@ export const barChartData = async (country) => {
 
 export const fetchDailyUpdate = async (country) => {
 	try {
-		var url = `https://co-vid-19-tracker-app.herokuapp.com/api/v1/stat/daily?country=${country}`;
+		var url = `https://covid-19tracker--app.herokuapp.com/api/v1/stat/daily?country=${country}`;
 
 		const {
 			data: {
@@ -62,7 +62,7 @@ export const fetchAllCountries = async () => {
 			body: { response },
 		},
 	} = await axios.get(
-		"https://co-vid-19-tracker-app.herokuapp.com/api/v1/stat/country/all"
+		"https://covid-19tracker--app.herokuapp.com/api/v1/stat/country/all"
 	);
 	const fetchedCountries = response.map((country) => country);
 
@@ -75,7 +75,7 @@ export const fetchAllCases = async () => {
 			body: { response },
 		},
 	} = await axios.get(
-		`https://co-vid-19-tracker-app.herokuapp.com/api/v1/stat/all`
+		`https://covid-19tracker--app.herokuapp.com/api/v1/stat/all`
 	);
 	var newCases = 0;
 	var newActiveCases = 0;
