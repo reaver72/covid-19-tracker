@@ -20,18 +20,11 @@ const App = () => {
 	);
 
 	const countryValue = (country) => {
-		console.log(country);
 		localStorage.setItem("country", country);
 		setCountry(localStorage.getItem("country"));
 	};
 	const countryHandler = async (country) => {
 		try {
-			// const fetchedTotal = await fetchTotal(country);
-			// if (fetchedTotal) {
-			// 	setData(fetchedTotal);
-			// } else {
-			// 	return;
-			// }
 			const fetchedDailyUpdate = await fetchDailyUpdate(country);
 			if (country === "Global") {
 				return;
@@ -42,32 +35,40 @@ const App = () => {
 			console.log(e);
 		}
 	};
-	useEffect(async () => {
-		const fetchedCountries = await fetchAllCountries();
-		setCountries(fetchedCountries);
+	useEffect(() => {
+		const fetchCountries = async () => {
+			const fetchedCountries = await fetchAllCountries();
+			setCountries(fetchedCountries);
+		};
+		fetchCountries();
 	}, []);
-	// useEffect(async () => {
-	// 	const fetchedTotal = await fetchTotal();
-	// 	setData(fetchedTotal);
-	// }, []);
-	useEffect(async () => {
-		console.log("object");
-		if (country) {
-			const barChartDatas = await barChartData(country);
-			setData(barChartDatas || 0);
-		} else {
-			const barChartDatas = await barChartData("Nepal");
-			setData(barChartDatas || 0);
-		}
+
+	useEffect(() => {
+		const barChartDataLoader = async () => {
+			if (country) {
+				const barChartDatas = await barChartData(country);
+				setData(barChartDatas || 0);
+			} else {
+				const barChartDatas = await barChartData("Nepal");
+				setData(barChartDatas || 0);
+			}
+		};
+		barChartDataLoader();
 	}, [country]);
-	useEffect(async () => {
-		const fetchedAllCases = await fetchAllCases();
-		setGlobalCases(fetchedAllCases);
+	useEffect(() => {
+		const fetchAllCase = async () => {
+			const fetchedAllCases = await fetchAllCases();
+			setGlobalCases(fetchedAllCases);
+		};
+		fetchAllCase();
 	}, []);
-	useEffect(async () => {
-		const fetchedDailyUpdate = await fetchDailyUpdate("Nepal");
-		setDailyData(fetchedDailyUpdate);
-		setLoading(false);
+	useEffect(() => {
+		const fetchDailyUpdateFunc = async () => {
+			const fetchedDailyUpdate = await fetchDailyUpdate("Nepal");
+			setDailyData(fetchedDailyUpdate);
+			setLoading(false);
+		};
+		fetchDailyUpdateFunc();
 	}, []);
 
 	if (loading) {
@@ -77,8 +78,8 @@ const App = () => {
 		<div className="bg-gray-900 min-h-screen">
 			<div className="flex justify-center sm:mb-0 mb-5">
 				<img
-					className="sm:w-full mb-1  md:h-40 flex justify-center sm:placeholder:my-1 w-full h-20"
-					src="https://www.willoughbyvet.com.au/wp-content/uploads/Covid-Banner-1024x259-1.jpg"
+					className="sm:w-full mb-1  md:h-44 flex justify-center sm:placeholder:my-1 w-full h-20"
+					src="https://www.cityofconcord.org/ImageRepository/Document?documentID=4265"
 					alt="image"
 				/>
 			</div>
@@ -87,13 +88,12 @@ const App = () => {
 				barData={data}
 				dailyData={dailyData}
 				globalCases={globalCases}
-				// dailyData={dailyData}
 				countryHandler={countryHandler}
 				countryValue={countryValue}
 				fetchedCountries={countries}
 				data={data}
 			/>
-			<Chart barData={data} />
+			<Chart barData={data} globalCases={globalCases} />
 			<LineChart />
 		</div>
 	);
