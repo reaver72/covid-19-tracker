@@ -16,10 +16,11 @@ const App = () => {
 	const [countries, setCountries] = useState([]);
 	const [globalCases, setGlobalCases] = useState({});
 	const [country, setCountry] = useState(
-		localStorage.getItem("country") || "Global"
+		localStorage.getItem("country") || "Nepal"
 	);
 
 	const countryValue = (country) => {
+		console.log("object");
 		localStorage.setItem("country", country);
 		setCountry(localStorage.getItem("country"));
 	};
