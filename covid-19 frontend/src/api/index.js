@@ -42,10 +42,10 @@ export const fetchDailyUpdate = async (country) => {
 
 		const {
 			data: {
-				body: { response },
+				body: { body },
 			},
 		} = await axios.get(url);
-		const modifiedDailyUpdate = response.map((singleDailyUpdate) => ({
+		const modifiedDailyUpdate = body.response.map((singleDailyUpdate) => ({
 			cases: singleDailyUpdate.cases,
 			deaths: singleDailyUpdate.deaths,
 		}));
@@ -62,7 +62,7 @@ export const fetchAllCountries = async () => {
 			body: { response },
 		},
 	} = await axios.get(
-		"https://covid-19tracker--app.herokuapp.com/api/v1/stat/country/all"
+		"https://co-vid-19-tracker-app.herokuapp.com/api/v1/stat/country/all"
 	);
 	const fetchedCountries = response.map((country) => country);
 
@@ -75,7 +75,7 @@ export const fetchAllCases = async () => {
 			body: { response },
 		},
 	} = await axios.get(
-		`https://covid-19tracker--app.herokuapp.com/api/v1/stat/all`
+		`https://co-vid-19-tracker-app.herokuapp.com/api/v1/stat/all`
 	);
 	var newCases = 0;
 	var newActiveCases = 0;
